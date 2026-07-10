@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-07-04T18:48:46.271007+00:00",
+  "models": [
+    {
+      "model_name": "isolation_forest",
+      "accuracy": 0.798,
+      "precision": 0.7711,
+      "recall": 0.7711,
+      "f1_score": 0.7711,
+      "roc_auc": 0.861,
+      "inference_time_ms": 3.0932
+    },
+    {
+      "model_name": "one_class_svm",
+      "accuracy": 0.7863,
+      "precision": 0.7012,
+      "recall": 0.899,
+      "f1_score": 0.7879,
+      "roc_auc": 0.9109,
+      "inference_time_ms": 0.1666
+    },
+    {
+      "model_name": "random_forest",
+      "accuracy": 0.972,
+      "precision": 0.9676,
+      "recall": 0.969,
+      "f1_score": 0.9683,
+      "roc_auc": 0.9957,
+      "inference_time_ms": 44.248
+    },
+    {
+      "model_name": "lstm",
+      "accuracy": 0.8525,
+      "precision": 0.7582,
+      "recall": 0.9891,
+      "f1_score": 0.8584,
+      "roc_auc": 0.9891,
+      "inference_time_ms": 81.4114
+    },
+    {
+      "model_name": "autoencoder",
+      "accuracy": 0.873,
+      "precision": 0.8643,
+      "recall": 0.8524,
+      "f1_score": 0.8583,
+      "roc_auc": 0.9403,
+      "inference_time_ms": 86.658
+    }
+  ],
+  "best_model": "random_forest"
+}

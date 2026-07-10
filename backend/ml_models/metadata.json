@@ -1,0 +1,90 @@
+{
+  "feature_names": [
+    "cpu_percent",
+    "cpu_freq_mhz",
+    "load_avg_1m",
+    "memory_percent",
+    "swap_percent",
+    "disk_percent",
+    "disk_read_mb_s",
+    "disk_write_mb_s",
+    "net_sent_mb_s",
+    "net_recv_mb_s",
+    "temperature_c",
+    "gpu_percent",
+    "gpu_memory_percent",
+    "process_count",
+    "cpu_percent_roll_mean",
+    "cpu_percent_roll_std",
+    "cpu_percent_roll_max",
+    "memory_percent_roll_mean",
+    "memory_percent_roll_std",
+    "memory_percent_roll_slope",
+    "disk_percent_roll_slope",
+    "net_sent_mb_s_roll_mean"
+  ],
+  "issue_labels": [
+    "abnormal_behavior",
+    "cpu_overload",
+    "disk_degradation",
+    "memory_leak",
+    "normal"
+  ],
+  "label_decoder": {
+    "abnormal_behavior": "abnormal_behavior",
+    "cpu_overload": "cpu_overload",
+    "disk_degradation": "disk_degradation",
+    "memory_leak": "memory_leak",
+    "normal": "normal"
+  },
+  "trained_at": "2026-07-04T18:47:57.929887+00:00",
+  "dataset_rows": 36000,
+  "anomaly_rate": 0.4413,
+  "random_forest_multiclass_report": {
+    "abnormal_behavior": {
+      "precision": 0.9822134387351779,
+      "recall": 0.994,
+      "f1-score": 0.9880715705765407,
+      "support": 500.0
+    },
+    "cpu_overload": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 489.0
+    },
+    "disk_degradation": {
+      "precision": 0.9552110249784669,
+      "recall": 0.951114922813036,
+      "f1-score": 0.9531585732703051,
+      "support": 1166.0
+    },
+    "memory_leak": {
+      "precision": 0.9544456641053787,
+      "recall": 0.9570720968629609,
+      "f1-score": 0.9557570761198131,
+      "support": 1817.0
+    },
+    "normal": {
+      "precision": 0.9755077658303465,
+      "recall": 0.9743436754176611,
+      "f1-score": 0.9749253731343284,
+      "support": 5028.0
+    },
+    "accuracy": 0.9703333333333334,
+    "macro avg": {
+      "precision": 0.9734755787298738,
+      "recall": 0.9753061390187316,
+      "f1-score": 0.9743825186201975,
+      "support": 9000.0
+    },
+    "weighted avg": {
+      "precision": 0.9703292880852152,
+      "recall": 0.9703333333333334,
+      "f1-score": 0.970328229461172,
+      "support": 9000.0
+    }
+  },
+  "autoencoder_threshold": 0.3144089230259294,
+  "lstm_sequence_length": 6
+}
