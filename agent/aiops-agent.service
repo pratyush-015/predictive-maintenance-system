@@ -1,0 +1,34 @@
+# Systemd unit for running the AIOps monitoring agent natively on Linux,
+# starting on boot and restarting automatically if it crashes.
+#
+# Install:
+#   sudo cp aiops-agent.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now aiops-agent
+#
+# Logs:
+#   journalctl -u aiops-agent -f
+#
+# Before installing, edit the paths below to match your checkout location
+# and make sure agent/.env is configured (see agent/.env.example).
+
+[Unit]
+Description=AIOps Monitoring Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# EDIT THESE TWO PATHS for your machine:
+WorkingDirectory=/opt/aiops-platform/agent
+ExecStart=/opt/aiops-platform/agent/.venv/bin/python /opt/aiops-platform/agent/main.py
+
+Restart=always
+RestartSec=5
+User=%i
+
+# Reasonable resource ceiling — the agent itself is lightweight (<50MB RAM)
+MemoryMax=200M
+
+[Install]
+WantedBy=multi-user.target

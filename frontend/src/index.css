@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/*
+  ============================================================
+  DESIGN SYSTEM — "Pulse" monitoring console
+  ============================================================
+  Subject: a real-time systems telemetry console. The palette and
+  type system borrow from oscilloscopes and NOC (network operations
+  center) displays — dark, high-contrast, legible at a glance, with a
+  single signal color that reads as "alive."
+
+  Color:
+    void        #0A0E14  page background
+    surface     #10161F  panel background
+    elevated    #161D29  card background
+    hairline    #232C3A  borders
+    ink         #E8EDF4  primary text
+    mute        #8494A8  secondary text
+    dim         #4C5A70  tertiary text / placeholders
+    signal      #2DD4BF  primary accent — "the pulse"
+    violet      #9B8CFB  secondary accent — used sparingly in charts
+    good        #3DD68C  healthy / normal
+    warn        #F5A623  warning
+    crit        #FB4B4B  critical
+    info        #5B8DEF  informational
+
+  Type:
+    display     'Space Grotesk'  headings, big numbers
+    body        'Inter'          UI text
+    mono        'JetBrains Mono' metrics, timestamps, ids
+  ============================================================
+*/
+
+@theme {
+  --color-void: #0a0e14;
+  --color-surface: #10161f;
+  --color-elevated: #161d29;
+  --color-elevated-hover: #1c2532;
+  --color-hairline: #232c3a;
+  --color-hairline-soft: #1a212c;
+  --color-ink: #e8edf4;
+  --color-mute: #8494a8;
+  --color-dim: #4c5a70;
+  --color-signal: #2dd4bf;
+  --color-signal-dim: #1a8577;
+  --color-violet: #9b8cfb;
+  --color-good: #3dd68c;
+  --color-warn: #f5a623;
+  --color-crit: #fb4b4b;
+  --color-info: #5b8def;
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --animate-pulse-slow: pulse-slow 2.4s ease-in-out infinite;
+  --animate-scan: scan 4s linear infinite;
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(45, 212, 191, 0.06), transparent),
+    linear-gradient(var(--color-hairline-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline-soft) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    48px 48px,
+    48px 48px;
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-void);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-hairline);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dim);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+[data-theme="light"] {
+  --color-void: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-elevated: #ffffff;
+  --color-elevated-hover: #f0f3f6;
+  --color-hairline: #dde3ea;
+  --color-hairline-soft: #e8ecf1;
+  --color-ink: #10161f;
+  --color-mute: #566579;
+  --color-dim: #8494a8;
+  --color-signal-dim: #cdeeea;
+}
+
+[data-theme="light"] body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(45, 212, 191, 0.08), transparent),
+    linear-gradient(var(--color-hairline-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline-soft) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    48px 48px,
+    48px 48px;
+}

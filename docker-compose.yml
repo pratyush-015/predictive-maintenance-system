@@ -1,0 +1,90 @@
+name: aiops-platform
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aiops}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aiops_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-aiops}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aiops}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - aiops-net
+
+  # Optional high-resolution time-series store. Disabled from the backend's
+  # perspective by default (INFLUX_ENABLED=false) — Postgres alone is enough
+  # to run the dashboard. Enable if you want long-retention raw telemetry.
+  influxdb:
+    image: influxdb:2.7-alpine
+    restart: unless-stopped
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUX_USERNAME:-admin}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUX_PASSWORD:-admin12345}
+      DOCKER_INFLUXDB_INIT_ORG: ${INFLUX_ORG:-aiops}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUX_BUCKET:-metrics}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:-dev-influx-token-change-me}
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    networks:
+      - aiops-net
+    profiles: ["influx"] # `docker compose --profile influx up` to include it
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ENVIRONMENT: production
+      DEBUG: "false"
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-aiops}:${POSTGRES_PASSWORD:-aiops_dev_password}@postgres:5432/${POSTGRES_DB:-aiops}
+      SECRET_KEY: ${SECRET_KEY:?Set a strong SECRET_KEY in your .env file}
+      AGENT_API_KEY: ${AGENT_API_KEY:?Set AGENT_API_KEY in your .env file}
+      CORS_ORIGINS: '["http://localhost","http://localhost:80","${PUBLIC_ORIGIN:-http://localhost}"]'
+      INFLUX_ENABLED: ${INFLUX_ENABLED:-false}
+      INFLUX_URL: http://influxdb:8086
+      INFLUX_TOKEN: ${INFLUX_TOKEN:-dev-influx-token-change-me}
+      INFLUX_ORG: ${INFLUX_ORG:-aiops}
+      INFLUX_BUCKET: ${INFLUX_BUCKET:-metrics}
+      ML_MODEL_DIR: /ml-models
+    volumes:
+      - ./ml/models:/ml-models:ro
+    ports:
+      - "8000:8000"
+    networks:
+      - aiops-net
+    command: >
+      sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: "" # relative paths; nginx proxies /api to the backend service
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - aiops-net
+
+networks:
+  aiops-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  influxdb_data:

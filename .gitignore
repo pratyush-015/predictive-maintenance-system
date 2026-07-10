@@ -1,0 +1,42 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+*.db
+*.db-journal
+
+# --- Node / Frontend ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# --- Env files (never commit real secrets) ---
+.env
+!.env.example
+backend/.env
+frontend/.env
+agent/.env
+
+# --- ML artifacts (large binaries; regenerate via ml/train_*.py, don't commit) ---
+ml/models/*.joblib
+ml/models/*.keras
+ml/data/*.csv
+
+# --- Agent local state ---
+agent/buffer.db
+agent/.device_identity.json
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# --- Logs ---
+*.log
