@@ -37,7 +37,7 @@
     "memory_leak": "memory_leak",
     "normal": "normal"
   },
-  "trained_at": "2026-07-04T18:47:57.929887+00:00",
+  "trained_at": "2026-07-21T07:57:36.985692+00:00",
   "dataset_rows": 36000,
   "anomaly_rate": 0.4413,
   "random_forest_multiclass_report": {
@@ -85,6 +85,6 @@
       "support": 9000.0
     }
   },
-  "autoencoder_threshold": 0.3144089230259294,
+  "autoencoder_threshold": 0.29644219356780876,
   "lstm_sequence_length": 6
 }
